@@ -17,9 +17,14 @@ class Hero:
 
     def take_damage(self, amount):
         self.stats["hp"] = max(self.stats["hp"] - amount, 0)
-        print(self.stats)
+
+    def heal(self, amount):
+        self.stats["hp"] = min(self.stats["hp"] + amount, self.stats["max_hp"])
 
 
 hero = Hero(input("Имя вашего героя? "))
 print(hero)
 hero.take_damage(50)
+print(f"Получен урон 50! Твои характеристики: {hero}")
+hero.heal(50)
+print(f"Получено лечение 50! Твои характеристики: {hero}")
