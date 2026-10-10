@@ -49,13 +49,13 @@ class Hero:
         return self.stats["hp"] > 0
 
     def fight(self, enemy):
-        print(f"Вы атаковали {enemy.name}")
+        print(f"Вы напали на {enemy.name}")
         while self.is_alive():
             input("Нажмите Enter чтобы атаковать противника")
             self.attack(enemy)
             print(f"{self.name} наносит {enemy.name} {self.stats['damage']} урона")
             if enemy.is_alive():
-                enemy.attack(hero)
+                enemy.attack(self)
                 print(f"{enemy.name} наносит {self.name} {enemy.stats['damage']} урона")
             else:
                 break
