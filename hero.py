@@ -48,7 +48,7 @@ class Hero:
     def is_alive(self):
         return self.stats["hp"] > 0
 
-    def fight(self, hero, enemy):
+    def fight(self, enemy):
         print(f"Вы атаковали {enemy.name}")
         while self.is_alive():
             input("Нажмите Enter чтобы атаковать противника")
@@ -56,7 +56,7 @@ class Hero:
             print(f"{self.name} наносит {enemy.name} {self.stats['damage']} урона")
             if enemy.is_alive():
                 enemy.attack(hero)
-                print(f"{enemy.name} наносит {hero.name} {enemy.stats['damage']} урона")
+                print(f"{enemy.name} наносит {self.name} {enemy.stats['damage']} урона")
             else:
                 break
         return "Вы одерживаете победу!" if self.is_alive() else "Вы погибли!"
@@ -65,4 +65,4 @@ class Hero:
 if __name__ == "__main__":
     hero = Hero(input("Имя вашего героя? "))
     enemy = Enemy("Гоблин")
-    print(hero.fight(hero, enemy))
+    print(hero.fight(enemy))
