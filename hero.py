@@ -33,30 +33,22 @@ class Hero:
         self.stats["max_hp"] = int(self.stats["max_hp"] * 1.2)
         self.stats["damage"] = int(self.stats["damage"] * 1.1)
         self.stats["max_mana"] = int(self.stats["max_mana"] * 1.2)
-        print(f"Вы повысили уровень! ваши актуальные характеристики: {self}")
 
     def gain_xp(self, amount_xp):
-        print(f"Получено опыта: {amount_xp}")
+        lvl_before_take_xp = int(self.stats["level"])
         self.stats["xp"] += amount_xp
         while self.stats["xp"] >= self.stats["max_xp"]:
             self.stats["xp"] = self.stats["xp"] - self.stats["max_xp"]
             self.level_up()
+        print(
+            f"Получено опыта: {amount_xp}. Уровень {lvl_before_take_xp}→{self.stats['level']}"
+        )
 
     def attack(self, target):
         target.take_damage(self.stats["damage"])
 
     def is_alive(self):
         return self.stats["hp"] > 0
-
-    def continue_path(self):
-        if (
-            input(
-                "Продолжить путь или вернуться? Идти дальше: Y, Вернуться: любой символ: "
-            ).lower()
-            == "y"
-        ):
-            return self.fight(self.spawn_enemy())
-        return "Вы возвращаетесь в лагерь"
 
     def fight(self, enemy):
         print(f"Вы напали на {enemy.name}")
@@ -69,11 +61,26 @@ class Hero:
                 print(f"{enemy.name} наносит {self.name} {enemy.stats['damage']} урона")
             else:
                 break
-        self.gain_xp(enemy.stats["xp_reward"])
         if self.is_alive():
             print("Вы одерживаете победу!")
-            return self.continue_path()
-        return "Вы погибли!"
+            self.gain_xp(enemy.stats["xp_reward"])
+            return True
+        return False
+
+    def explore(self):
+        while True:
+            enemy = self.spawn_enemy()
+            won = self.fight(enemy)
+            if won:
+                if (
+                    input("Продолжить путь? [y] Отправиться в лагерь [n]").lower()
+                    == "n"
+                ):
+                    print("Вы возвращаетесь в лагерь")
+                    break
+            else:
+                print("Вы погибли!")
+                break
 
     def spawn_enemy(self):
         return Enemy("Гоблин")
@@ -81,5 +88,4 @@ class Hero:
 
 if __name__ == "__main__":
     hero = Hero(input("Имя вашего героя? "))
-    print(hero.fight(hero.spawn_enemy()))
-    print(hero)
+    hero.explore()
