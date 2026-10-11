@@ -48,6 +48,16 @@ class Hero:
     def is_alive(self):
         return self.stats["hp"] > 0
 
+    def continue_path(self):
+        if (
+            input(
+                "Продолжить путь или вернуться? Идти дальше: Y, Вернуться: любой символ: "
+            ).lower()
+            == "y"
+        ):
+            return self.fight(self.spawn_enemy())
+        return "Вы возвращаетесь в лагерь"
+
     def fight(self, enemy):
         print(f"Вы напали на {enemy.name}")
         while self.is_alive():
@@ -59,10 +69,17 @@ class Hero:
                 print(f"{enemy.name} наносит {self.name} {enemy.stats['damage']} урона")
             else:
                 break
-        return "Вы одерживаете победу!" if self.is_alive() else "Вы погибли!"
+        self.gain_xp(enemy.stats["xp_reward"])
+        if self.is_alive():
+            print("Вы одерживаете победу!")
+            return self.continue_path()
+        return "Вы погибли!"
+
+    def spawn_enemy(self):
+        return Enemy("Гоблин")
 
 
 if __name__ == "__main__":
     hero = Hero(input("Имя вашего героя? "))
-    enemy = Enemy("Гоблин")
-    print(hero.fight(enemy))
+    print(hero.fight(hero.spawn_enemy()))
+    print(hero)

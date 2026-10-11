@@ -1,7 +1,7 @@
 class Enemy:
     def __init__(self, name):
         self.name = name
-        self.stats = {"hp": 100, "damage": 8}
+        self.stats = {"hp": 100, "damage": 8, "xp_reward": 125}
         self.equipment = {"boots": None, "chest": None, "legs": None, "helmet": None}
 
     def __str__(self):
