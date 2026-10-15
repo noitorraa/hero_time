@@ -14,7 +14,19 @@ class Hero:
             "max_xp": 10,
             "level": 1,
         }
+        self.inventory = []
         self.equipment = {"boots": None, "chest": None, "legs": None, "helmet": None}
+
+    @property
+    def gold(self):
+        return sum(i["amount"] for i in self.inventory if i["type"] == "gold")
+
+    def add_item(self, item):
+        self.inventory.append(item)
+        if item["type"] == "gold":
+            print(f"Получено золото: {item['amount']}")
+        else:
+            print(f"Получен предмет: {item.get('name', item['type'])}")
 
     def __str__(self):
         return f"{self.name}: {self.stats}"
@@ -64,6 +76,8 @@ class Hero:
         if self.is_alive():
             print("Вы одерживаете победу!")
             self.gain_xp(enemy.stats["xp_reward"])
+            for item in enemy.roll_loot():
+                self.add_item(item)
             return True
         return False
 
@@ -83,7 +97,13 @@ class Hero:
                 break
 
     def spawn_enemy(self):
-        return Enemy("Гоблин")
+        return Enemy(
+            "Гоблин",
+            loot_table=[
+                {"item": {"type": "gold", "amount": 10}, "chance": 100},  # всегда
+                {"item": {"type": "gold", "amount": 25}, "chance": 30},  # бонус
+            ],
+        )
 
 
 if __name__ == "__main__":
