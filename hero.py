@@ -81,6 +81,9 @@ class Hero:
             return True
         return False
 
+    def camp(self):
+        self.heal(int(self.stats["max_hp"]))
+
     def explore(self):
         while True:
             enemy = self.spawn_enemy()
@@ -91,7 +94,8 @@ class Hero:
                     == "n"
                 ):
                     print("Вы возвращаетесь в лагерь")
-                    break
+                    self.camp()
+                    print("Вы возвращаетесь в пустошь")
             else:
                 print("Вы погибли!")
                 break
