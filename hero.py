@@ -1,4 +1,5 @@
 from enemy import Enemy
+import random
 
 
 class Hero:
@@ -55,16 +56,26 @@ class Hero:
                     break
                 except ValueError:
                     print("Пожалуйста, введите целое число.")
-        print(f"Очки распределены. Осталось {points} очков.")
+        if points > 0:
+            print(f"Осталось {points} очков, которые не были распределены.")
+        else:
+            print("Все очки распределены.")
 
     def random_roll_attributes(self):
-        import random
         points = 10
         for attr in self.attributes:
             value = random.randint(0, points)
             self.attributes[attr] = value
             points -= value
-        print(f"Характеристики случайно распределены. Осталось {points} очков.")
+        if points > 0:
+            # Распределяем оставшиеся очки
+            for attr in self.attributes:
+                if points == 0:
+                    break
+                value = random.randint(0, points)
+                self.attributes[attr] += value
+                points -= value
+        print("Характеристики случайно распределены.")
 
     def reset_attributes(self):
         self.attributes = {
