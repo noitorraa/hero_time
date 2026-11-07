@@ -37,6 +37,44 @@ class Hero:
     def add_attribute(self, name, value=10):
         self.attributes[name] = value
 
+    def manual_distribute_attributes(self):
+        points = 10
+        print(f"У вас есть {points} очков для распределения.")
+        for attr in self.attributes:
+            while True:
+                try:
+                    value = int(input(f"Введите значение для {attr}: "))
+                    if value < 0:
+                        print("Значение не может быть отрицательным.")
+                        continue
+                    if value > points:
+                        print(f"У вас недостаточно очков. Осталось {points} очков.")
+                        continue
+                    points -= value
+                    self.attributes[attr] = value
+                    break
+                except ValueError:
+                    print("Пожалуйста, введите целое число.")
+        print(f"Очки распределены. Осталось {points} очков.")
+
+    def random_roll_attributes(self):
+        import random
+        points = 10
+        for attr in self.attributes:
+            value = random.randint(0, points)
+            self.attributes[attr] = value
+            points -= value
+        print(f"Характеристики случайно распределены. Осталось {points} очков.")
+
+    def reset_attributes(self):
+        self.attributes = {
+            "strength": 10,
+            "agility": 10,
+            "intelligence": 10,
+            "wisdom": 10,
+        }
+        print("Характеристики сброшены к начальным значениям.")
+
     def __str__(self):
         return f"{self.name}: {self.stats}, {self.attributes}"
 
@@ -122,5 +160,11 @@ class Hero:
 if __name__ == "__main__":
     hero = Hero("Test Hero")
     hero.add_attribute("charisma", 12)
+    print(hero)
+    # hero.manual_distribute_attributes()
+    # print(hero)
+    hero.random_roll_attributes()
+    print(hero)
+    hero.reset_attributes()
     print(hero)
     # hero.explore()
