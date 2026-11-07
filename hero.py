@@ -16,16 +16,16 @@ class Hero:
             "level": 1,
         }
         self.attributes = {
-            "strength": 10,
-            "agility": 10,
-            "intelligence": 10,
-            "wisdom": 10,
+            "strength": 0,
+            "agility": 0,
+            "intelligence": 0,
+            "wisdom": 0,
         }
         self.available_attributes = {
-            "strength": 10,
-            "agility": 10,
-            "intelligence": 10,
-            "wisdom": 10,
+            "strength": 0,
+            "agility": 0,
+            "intelligence": 0,
+            "wisdom": 0,
         }
         self.inventory = []
         self.equipment = {"boots": None, "chest": None, "legs": None, "helmet": None}
@@ -42,8 +42,9 @@ class Hero:
             print(f"Получен предмет: {item.get('name', item['type'])}")
 
     def add_attribute(self, name):
-        self.attributes[name] = 0
-        self.available_attributes[name] = 0
+        if name not in self.attributes:
+            self.attributes[name] = 0
+            self.available_attributes[name] = 0
 
     def manual_distribute_attributes(self):
         points = 10
