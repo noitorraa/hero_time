@@ -63,18 +63,14 @@ class Hero:
 
     def random_roll_attributes(self):
         points = 10
-        for attr in self.attributes:
-            value = random.randint(0, points)
+        attrs = list(self.attributes.keys())
+        for i, attr in enumerate(attrs):
+            if i == len(attrs) - 1:
+                value = points
+            else:
+                value = random.randint(0, points)
             self.attributes[attr] = value
             points -= value
-        if points > 0:
-            # Распределяем оставшиеся очки
-            for attr in self.attributes:
-                if points == 0:
-                    break
-                value = random.randint(0, points)
-                self.attributes[attr] += value
-                points -= value
         print("Характеристики случайно распределены.")
 
     def reset_attributes(self):
