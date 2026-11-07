@@ -21,6 +21,12 @@ class Hero:
             "intelligence": 10,
             "wisdom": 10,
         }
+        self.available_attributes = {
+            "strength": 10,
+            "agility": 10,
+            "intelligence": 10,
+            "wisdom": 10,
+        }
         self.inventory = []
         self.equipment = {"boots": None, "chest": None, "legs": None, "helmet": None}
 
@@ -35,13 +41,15 @@ class Hero:
         else:
             print(f"Получен предмет: {item.get('name', item['type'])}")
 
-    def add_attribute(self, name, value=10):
-        self.attributes[name] = value
+    def add_attribute(self, name):
+        self.attributes[name] = 0
+        self.available_attributes[name] = 0
 
     def manual_distribute_attributes(self):
         points = 10
         print(f"У вас есть {points} очков для распределения.")
-        for attr in self.attributes:
+        attrs = list(self.attributes.keys())
+        for attr in attrs:
             while True:
                 try:
                     value = int(input(f"Введите значение для {attr}: "))
@@ -56,10 +64,26 @@ class Hero:
                     break
                 except ValueError:
                     print("Пожалуйста, введите целое число.")
-        if points > 0:
+
+        while points > 0:
             print(f"Осталось {points} очков, которые не были распределены.")
-        else:
-            print("Все очки распределены.")
+            attr = attrs[-1]
+            while True:
+                try:
+                    value = int(input(f"Введите значение для {attr}: "))
+                    if value < 0:
+                        print("Значение не может быть отрицательным.")
+                        continue
+                    if value > points:
+                        print(f"У вас недостаточно очков. Осталось {points} очков.")
+                        continue
+                    self.attributes[attr] += value
+                    points -= value
+                    break
+                except ValueError:
+                    print("Пожалуйста, введите целое число.")
+
+        print("Все очки распределены.")
 
     def random_roll_attributes(self):
         points = 10
@@ -74,12 +98,7 @@ class Hero:
         print("Характеристики случайно распределены.")
 
     def reset_attributes(self):
-        self.attributes = {
-            "strength": 10,
-            "agility": 10,
-            "intelligence": 10,
-            "wisdom": 10,
-        }
+        self.attributes = {attr: self.available_attributes[attr] for attr in self.available_attributes}
         print("Характеристики сброшены к начальным значениям.")
 
     def __str__(self):
@@ -164,9 +183,10 @@ class Hero:
         )
 
 
+
 if __name__ == "__main__":
     hero = Hero("Test Hero")
-    hero.add_attribute("charisma", 12)
+    hero.add_attribute("charisma")
     print(hero)
     # hero.manual_distribute_attributes()
     # print(hero)
