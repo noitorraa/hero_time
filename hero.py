@@ -14,6 +14,12 @@ class Hero:
             "max_xp": 10,
             "level": 1,
         }
+        self.attributes = {
+            "strength": 10,
+            "agility": 10,
+            "intelligence": 10,
+            "wisdom": 10,
+        }
         self.inventory = []
         self.equipment = {"boots": None, "chest": None, "legs": None, "helmet": None}
 
@@ -28,8 +34,11 @@ class Hero:
         else:
             print(f"Получен предмет: {item.get('name', item['type'])}")
 
+    def add_attribute(self, name, value=10):
+        self.attributes[name] = value
+
     def __str__(self):
-        return f"{self.name}: {self.stats}"
+        return f"{self.name}: {self.stats}, {self.attributes}"
 
     def take_damage(self, amount):
         self.stats["hp"] = max(self.stats["hp"] - amount, 0)
@@ -111,5 +120,7 @@ class Hero:
 
 
 if __name__ == "__main__":
-    hero = Hero(input("Имя вашего героя? "))
-    hero.explore()
+    hero = Hero("Test Hero")
+    hero.add_attribute("charisma", 12)
+    print(hero)
+    # hero.explore()
